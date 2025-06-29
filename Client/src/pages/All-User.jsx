@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import API_ROUTES from "../common";
 import { toast } from "react-toastify";
-import ChangeUserRole from "../Components/changeUserRole";
+import ChangeUserRole from "../Components/ChangeUserRole";
 import Back from "../Components/BackButton";
 import DeleteUser from "../Components/DeleteUser";
 
