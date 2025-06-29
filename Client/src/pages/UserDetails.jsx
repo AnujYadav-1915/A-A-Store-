@@ -1,21 +1,33 @@
 import { useEffect, useState } from "react";
-// import axios from "axios";
+import API_ROUTES from "../common";
 
 export default function UserDetails() {
   const [user, setUser] = useState(null);
 
-//   useEffect(() => {
-//     axios
-//       .get("http://localhost:5000/api/user-details", {
-//         withCredentials: true,
-//       })
-//       .then((res) => {
-//         setUser(res.data.data);
-//       })
-//       .catch((err) => {
-//         console.error("Error fetching user details:", err);
-//       });
-//   }, []);
+  const fetchUserDetails = async () => {
+    try {
+      const response = await fetch(API_ROUTES.userDetails.url, {
+        method: API_ROUTES.userDetails.method,
+        credentials: "include", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const dataResponse = await response.json();
+      if (dataResponse.success) {
+        setUser(dataResponse?.data);
+      } else {
+        console.error("Failed to fetch user details:", dataResponse.message);
+      }
+    } catch (error) {
+      console.error("Error fetching user details:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserDetails(); // ✅ Correct function call
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#F9FAFB] p-4 md:p-8">
