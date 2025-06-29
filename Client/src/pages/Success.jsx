@@ -1,38 +1,33 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../Components/Header'
-import Footer from '../Components/Footer'
+import Footer from '../components/Footer'
 import { Link, useLocation } from 'react-router-dom'
 import { FaCheckCircle } from 'react-icons/fa'
-import API_ROUTES from '../common'
 
 const Success = () => {
-  // const context = useContext(cartProductCount)
-  const [orderId, setOrderId] = useState(null)
-  const query = new URLSearchParams(useLocation().search)
-  const sessionId = query.get("session_id")
+  const [orderId, setOrderId] = useState('')
+  const location = useLocation()
 
-  console.log("Session ID:", orderId);
-  
-  const fetchOrderId = async () => {
-    try {
-      const res = await fetch(`${API_ROUTES.getOrderBySessionId.url}?session_id=${sessionId}`, {
-        method: 'GET',
-        credentials: 'include',
-      });
-      const data = await res.json();
-      if (data.success) {
-        setOrderId(data.data._id); 
-      }
-    } catch (err) {
-      console.error("Failed to fetch order", err)
-    }
+  const getSessionIdFromURL = () => {
+    const params = new URLSearchParams(location.search)
+    return params.get('session_id')
   }
 
   useEffect(() => {
+    const sessionId = getSessionIdFromURL()
+
+    // ✅ Optional: You can call your backend to fetch orderId from sessionId
     if (sessionId) {
-      fetchOrderId()
+      // Call your backend API to get orderId from Stripe session
+      fetch(`/api/verify-session?session_id=${sessionId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            setOrderId(data.orderId) // From backend
+          }
+        })
     }
-  }, [sessionId])
+  }, [location])
 
   return (
     <div className='bg-[#F9FAFB] min-h-screen flex flex-col'>
@@ -49,14 +44,14 @@ const Success = () => {
             >
               Continue Shopping
             </Link>
-            
+            {orderId && (
               <Link
-                to={'/see-order'}
+                to={`/see-order/${orderId}`}
                 className='inline-block bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded transition'
               >
                 See Order
               </Link>
-            
+            )}
           </div>
         </div>
       </div>

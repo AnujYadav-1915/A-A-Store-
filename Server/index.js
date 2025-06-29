@@ -31,6 +31,7 @@ const webhooks = require('./controller/Webhook');
 const orderController = require('./controller/order.controller');
 const allOrderController = require('./controller/allOrders.controller');
 const getOrderBySessionId = require('./controller/getOrderBySessionId');
+const verifySessionRoute = require("./routes/verifySession");
 
 
 
@@ -52,6 +53,10 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(cookieParser());
+
+
+app.use("/api", verifySessionRoute);
+
 app.use('/api', routes);
 app.post('/api/signup', userSignUp);
 app.post('/api/signin', userSignIn);
