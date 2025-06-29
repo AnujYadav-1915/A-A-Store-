@@ -35,12 +35,21 @@ const getOrderBySessionId = require('./controller/getOrderBySessionId');
 
 
 const app = express();
-app.use(cors(
-    {
-        origin: process.env.CLIENT_URL || 'http://localhost:3000',
-        credentials: true, // Allow cookies to be sent with requests
+const allowedOrigins = [
+  'https://nakli-zon-9oup.vercel.app', 
+  'http://localhost:3000' 
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
     }
-));
+  },
+  credentials: true
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api', routes);
