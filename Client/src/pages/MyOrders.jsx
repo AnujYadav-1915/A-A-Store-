@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../Components/Header';
-import Footer from '../components/Footer';
+import Footer from '../Components/Footer';
 import API_ROUTES from '../common';
 import displayINRCurrency from '../helper/displayCurrency';
 

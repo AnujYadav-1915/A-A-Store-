@@ -1,5 +1,5 @@
-import Hero from "../components/Hero";
-import Footer from "../components/Footer";
+import Hero from "../Components/Hero";
+import Footer from "../Components/Footer";
 import Header from '../Components/Header';
 import ProductsByCategory from "../Components/ProductsByCategory";
 import HorizontalCardProduct from "../Components/HoriCard";

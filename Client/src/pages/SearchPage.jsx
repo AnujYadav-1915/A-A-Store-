@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import Header from '../Components/Header'
-import Footer from '../components/Footer'
+import Footer from '../Components/Footer'
 import API_ROUTES from '../common'
 import displayINRCurrency from '../helper/displayCurrency'
 import { Link } from 'react-router-dom'
