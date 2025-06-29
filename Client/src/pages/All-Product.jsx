@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import UploadProducts from "../Components/UploadProducts";
 import { MdDriveFolderUpload } from "react-icons/md";
 import API_ROUTES from "../common";
-import TbodyProduct from "../Components/tbodyProduct";
+import TbodyProduct from "../Components/TbodyProduct";
 import AdminViewProduct from "../Components/AdminViewProduct";
 import AdminEditProduct from "../Components/AdminEditProduct";
 import AdminDeleteProduct from "../Components/AdminDeleteProduct";
