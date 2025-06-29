@@ -13,7 +13,7 @@ import AllUsers from '../pages/All-User';
 import AllProducts from '../pages/All-Product';
 import CategoryProduct from '../Components/CategoryProduct';
 import ProductDetails from '../pages/ProductDetails';
-import ViewCart from '../Components/viewCart';
+import ViewCart from '../Components/ViewCart';
 import MyAccount from '../pages/MyAccount';
 import MyOrders from '../pages/MyOrders';
 import MyWishlist from '../pages/MyWishlist';
