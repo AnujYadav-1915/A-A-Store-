@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Header from "../Components/Header";
-import Footer from "../components/Footer";
+import Footer from "../Components/Footer";
 import { Link, useLocation } from "react-router-dom";
 import { FaTimesCircle } from "react-icons/fa";
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../Components/Header";
-import Footer from "../components/Footer";
+import Footer from "../Components/Footer";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import API_ROUTES from "../common"; // or set your API base URL here
