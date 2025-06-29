@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+img.transparent-white {
+  mix-blend-mode: multiply;
+  background-color: transparent;
+}
+
+.scroll-container {
+  overflow: auto;          
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;  
+}
