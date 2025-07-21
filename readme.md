@@ -41,7 +41,7 @@
 | **Database** | MongoDB                            |
 | **Auth**     | JWT / Sessions                     |
 | **Deploy**   | Vercel (frontend) & (backend)|
-| **Tools**    | EAS, Stripe, Cloudinary  |
+| **Tools**    | Stripe, Cloudinary  |
 
 ---
 
