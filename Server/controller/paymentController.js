@@ -38,7 +38,7 @@ const paymentController = async(request,response)=>{
                         enabled : true,
                         minimum : 1
                     },
-                    quantity : item. quantity
+                    quantity : item.quantity
 
                 }
             }),
