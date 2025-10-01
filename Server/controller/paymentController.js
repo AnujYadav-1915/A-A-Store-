@@ -42,7 +42,7 @@ const paymentController = async(request,response)=>{
 
                 }
             }),
-            success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+            success_url: `${process.env.CLIENT_URL}/success?session_id=cs_test_a18Juoc9wHoR2cccfFJSmsC2EFURQBRjM7POvTmqrLb5Nmn6rHIiPgGNza`,
             cancel_url : `${process.env.CLIENT_URL}/cancel`,
         }
 
