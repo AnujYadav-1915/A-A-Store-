@@ -1,6 +1,6 @@
 {
     "version" : 2,
-    "name": "A-A-Store",
+    "name": "a-a-store-backend",
     "builds": [
         {
             "src": "index.js",
