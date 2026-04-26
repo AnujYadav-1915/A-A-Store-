@@ -1,4 +1,11 @@
-const API_URL = import.meta.env.VITE_Server_URL
+let API_URL = import.meta.env.VITE_Server_URL || "http://localhost:5000";
+if (import.meta.env.PROD) {
+    API_URL = "https://a-a-store-backend.vercel.app";
+}
+// Append /api if missing so all routes correctly map to /api/...
+if (!API_URL.endsWith('/api')) {
+    API_URL += '/api';
+}
 
 const API_ROUTES = {
   signUp: {
@@ -90,19 +97,17 @@ const API_ROUTES = {
     method: 'POST',
   },
   getOrder : {
-      url : `${API_URL}/order-list`,
+      url : `${API_URL.replace('/api', '')}/order-list`,
       method : 'get'
   },
   allOrder : {
-      url : `${API_URL}/api/all-order`,
+      url : `${API_URL.replace('/api', '')}/all-order`,
       method : 'get'
   },
   getOrderBySessionId: {
-  url: `${API_URL}/get-order-by-session-id`,
-  method: "GET",
-},
-
-
+      url: `${API_URL.replace('/api', '')}/get-order-by-session-id`,
+      method: "GET",
+  },
 };
 
 export default API_ROUTES;
