@@ -3,7 +3,7 @@ import Header from "./Header";
 import API_ROUTES from "../common";
 import displayINRCurrency from "../helper/displayCurrency";
 import Context from "../context";
-import { loadStripe } from "@stripe/stripe-js";
+
 export default function ViewCart() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -70,8 +70,7 @@ export default function ViewCart() {
   ]);
 
   const handlePayment = async () => {
-     const stripePromise = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
-
+      // 1. Create order on the backend
       const response = await fetch(API_ROUTES.payment.url, {
         method: API_ROUTES.payment.method,
         credentials: "include",
@@ -82,11 +81,72 @@ export default function ViewCart() {
       });
 
       const responseData = await response.json();
-      // console.log("Payment Response Data:", ResponseData);
-      if(responseData?.id) {
-        stripePromise.redirectToCheckout({ sessionId: responseData.id });
+      
+      if(responseData.success && responseData.order) {
+          const { id, amount, currency } = responseData.order;
+
+          // 2. Load Razorpay script dynamically
+          const loadRazorpay = () => {
+              return new Promise((resolve) => {
+                  const script = document.createElement("script");
+                  script.src = "https://checkout.razorpay.com/v1/checkout.js";
+                  script.onload = () => resolve(true);
+                  script.onerror = () => resolve(false);
+                  document.body.appendChild(script);
+              });
+          };
+
+          const res = await loadRazorpay();
+          if (!res) {
+              alert("Razorpay SDK failed to load. Are you online?");
+              return;
+          }
+
+          // 3. Initialize Razorpay popup
+          const options = {
+              key: import.meta.env.VITE_RAZORPAY_KEY_ID, // Your Razorpay Key ID
+              amount: amount.toString(),
+              currency: currency,
+              name: "NakliZon A&A Store",
+              description: "Test Transaction",
+              order_id: id,
+              handler: async function (response) {
+                  // 4. Verify payment on backend
+                  const verifyRes = await fetch(API_ROUTES.verifyPayment.url, {
+                      method: API_ROUTES.verifyPayment.method,
+                      credentials: "include",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                          razorpay_order_id: response.razorpay_order_id,
+                          razorpay_payment_id: response.razorpay_payment_id,
+                          razorpay_signature: response.razorpay_signature,
+                          cartItems: cartItems,
+                          userEmail: cartItems[0]?.productId?.email // Optional: pass email or userId
+                      })
+                  });
+                  const verifyData = await verifyRes.json();
+                  if (verifyData.success) {
+                      window.location.href = "/success";
+                  } else {
+                      alert("Payment verification failed");
+                  }
+              },
+              prefill: {
+                  name: "NakliZon User",
+                  email: "user@example.com",
+                  contact: "9999999999"
+              },
+              theme: {
+                  color: "#3399cc"
+              }
+          };
+
+          const paymentObject = new window.Razorpay(options);
+          paymentObject.open();
+      } else {
+          alert("Could not create Razorpay order.");
       }
-  }
+  };
 
   // Total calculations
   const totalMRP = cartItems.reduce((acc, item) => acc + (item.productId.price * item.quantity), 0);

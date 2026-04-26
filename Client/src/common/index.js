@@ -85,6 +85,10 @@ const API_ROUTES = {
     url: `${API_URL}/payment`,
     method: 'POST',
   },
+  verifyPayment: {
+    url: `${API_URL}/verify-payment`,
+    method: 'POST',
+  },
   getOrder : {
       url : `${API_URL}/order-list`,
       method : 'get'

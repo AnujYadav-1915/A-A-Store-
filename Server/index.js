@@ -27,13 +27,10 @@ const countAddToCartProduct = require('./controller/countAddToCartProduct');
 const updateAddToCartProduct = require('./controller/updateAddToCartProduct');
 const searchProduct = require('./controller/searchProduct');
 const paymentController = require('./controller/paymentController');
-const webhooks = require('./controller/Webhook');
+
 const orderController = require('./controller/order.controller');
 const allOrderController = require('./controller/allOrders.controller');
 const getOrderBySessionId = require('./controller/getOrderBySessionId');
-const verifySessionRoute = require("./routes/verifySession");
-
-
 
 const app = express();
 const allowedOrigins = [
@@ -56,9 +53,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 
-app.use("/api", verifySessionRoute);
-
 app.use('/api', routes);
+
 app.post('/api/signup', userSignUp);
 app.post('/api/signin', userSignIn);
 app.get('/api/user-details',authToken, userDetails);
@@ -84,8 +80,10 @@ app.get('/api/count-cart-items', authToken, countAddToCartProduct);
 app.post('/api/update-cart-item', authToken, updateAddToCartProduct);
 app.get('/api/search-product', searchProduct);
 
+const paymentVerification = require('./controller/paymentVerification');
+
 app.post('/api/payment', authToken, paymentController);
-app.post('/webhook',webhooks) // /api/webhook
+app.post('/api/verify-payment', authToken, paymentVerification);
 app.get("/order-list",authToken,orderController)
 app.get("/all-order",authToken,allOrderController)
 app.get('/get-order-by-session-id', authToken, getOrderBySessionId)
