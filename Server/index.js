@@ -35,6 +35,7 @@ const getOrderBySessionId = require('./controller/getOrderBySessionId');
 const app = express();
 const allowedOrigins = [
   'https://nakli-zon-9oup.vercel.app', // ✅ NO trailing slash
+  'https://a-a-store-frontend.vercel.app', // Added correct production URL
   'http://localhost:3000', // for local testing
   'http://localhost:5173'
 ];
