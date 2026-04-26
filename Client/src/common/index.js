@@ -86,7 +86,7 @@ const API_ROUTES = {
     method: 'POST',
   },
   getOrder : {
-      url : `$${API_URL}/order-list`,
+      url : `${API_URL}/order-list`,
       method : 'get'
   },
   allOrder : {

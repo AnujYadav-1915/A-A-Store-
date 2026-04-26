@@ -38,7 +38,8 @@ const verifySessionRoute = require("./routes/verifySession");
 const app = express();
 const allowedOrigins = [
   'https://nakli-zon-9oup.vercel.app', // ✅ NO trailing slash
-  'http://localhost:3000' // for local testing
+  'http://localhost:3000', // for local testing
+  'http://localhost:5173'
 ];
 
 app.use(cors({
@@ -90,11 +91,11 @@ app.get("/all-order",authToken,allOrderController)
 app.get('/get-order-by-session-id', authToken, getOrderBySessionId)
 
 
+const PORT = process.env.PORT || 5000;
+
 connectDB().then(()=>{
     app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     console.log(`MongoDB Connected: `);
     });
 });
-
-const PORT = process.env.PORT || 5000;

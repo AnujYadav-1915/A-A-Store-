@@ -22,11 +22,9 @@ async function userSignIn(req, res) {
       return res.status(404).json({ message: 'User not found', error: true });
     }
 
-    const checkPassword = async (password, hashedPassword) => {
-      return await bcrypt.compare(password, hashedPassword);
-    };
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
-    if(checkPassword){
+    if(isPasswordCorrect){
       const tokenData = {
           _id: user._id,
           email: user.email,
@@ -37,7 +35,7 @@ async function userSignIn(req, res) {
         { expiresIn: 60* 60 * 24 } // Token valid for 1 day
       );
 
-      tokenOptions = {
+      const tokenOptions = {
         httpOnly: true,
         secure: true, 
         sameSite: 'None',
@@ -48,6 +46,8 @@ async function userSignIn(req, res) {
         error: false,
         data : token
       });
+    } else {
+      return res.status(401).json({ message: 'Incorrect password', error: true, success: false });
     }
   } catch (error) {
     res.status(500).json({ 
