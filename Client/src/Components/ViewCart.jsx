@@ -107,7 +107,7 @@ export default function ViewCart() {
               key: import.meta.env.VITE_RAZORPAY_KEY_ID, // Your Razorpay Key ID
               amount: amount.toString(),
               currency: currency,
-              name: "A&A Store",
+              name: "NakliZon",
               description: "Test Transaction",
               order_id: id,
               handler: async function (response) {
@@ -132,7 +132,7 @@ export default function ViewCart() {
                   }
               },
               prefill: {
-                  name: "A&A Store User",
+                  name: "NakliZon User",
                   email: "user@example.com",
                   contact: "9999999999"
               },

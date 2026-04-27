@@ -36,7 +36,6 @@ const app = express();
 const allowedOrigins = [
   'https://nakli-zon-9oup.vercel.app',
   'https://a-a-store-frontend.vercel.app',
-  'https://a-a-store-two.vercel.app', // Adding common Vercel naming variations
   'http://localhost:3000',
   'http://localhost:5173'
 ];

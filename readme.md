@@ -1,28 +1,34 @@
-# 🛍️ A&A Store – A Premium E-Commerce Platform
+# 🛍️ NakliZon – A Minimal E-Commerce Practice Project
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-green)](https://a-a-store-frontend.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-green)](https://nakli-zon-9oup.vercel.app/)
 [![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)](#)
 [![Tech Stack](https://img.shields.io/badge/Stack-MERN-informational)](#)
 
-> ⚡ A&A Store is a high-performance e-commerce platform built with the MERN stack, featuring a seamless shopping experience and integrated Razorpay payments.
+> ⚡ NakliZon is a personal e-commerce practice project developed to learn and implement the full development cycle using the MERN stack and modern tools.
 
 ---
 
 ## 🌐 Live Site
 
-🔗 [**A&A Store Live**](https://a-a-store-frontend.vercel.app/)
+🔗 [**nakli-zon-9oup.vercel.app**](https://nakli-zon-9oup.vercel.app/)
+
+---
+
+## 🖼️ Project Preview
+
+<img width="100%" alt="NakliZon Preview" src="https://github.com/user-attachments/assets/c0c2250f-aa59-4bd0-beb8-3527d9a74be0" />
 
 ---
 
 ## ✅ Features
 
-- 🔐 User authentication (JWT-based Login/Register)
-- 🛒 Real-time cart management
-- 🧾 Seamless Razorpay Checkout flow 
-- 📚 Dynamic Category-wise product browsing
-- 🧑 User profile, order history, and wishlist
-- ⚡ Ultra-fast, responsive, and premium UI
-- 📱 Mobile-optimized layout using Tailwind CSS
+- 🔐 User authentication (Login/Register)
+- 🛒 Add to cart and manage cart items
+- 🧾 Checkout flow 
+- 📚 Category-wise product browsing
+- 🧑 User profile, orders, and wishlist =
+- ⚡ Fast, responsive, and clean UI
+- 📱 Mobile-friendly layout using Tailwind CSS
 
 ---
 
@@ -30,12 +36,12 @@
 
 | Tech         | Description                        |
 |--------------|------------------------------------|
-| **Frontend** | React, Redux Toolkit, Tailwind CSS |
+| **Frontend** | React, Tailwind CSS, React Router Dom |
 | **Backend**  | Node.js, Express.js                |
-| **Database** | MongoDB Atlas                      |
-| **Auth**     | JWT / Cookie-based Auth            |
-| **Deploy**   | Vercel (Full Stack)                |
-| **Tools**    | Razorpay, Cloudinary               |
+| **Database** | MongoDB                            |
+| **Auth**     | JWT / Sessions                     |
+| **Deploy**   | Vercel (frontend) & (backend)|
+| **Tools**    | EAS, Stripe, Cloudinary  |
 
 ---
 
@@ -48,41 +54,57 @@ Follow these steps to run **NakliZon** locally:
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/ashish11211121/e-commerce-nakli-platform.git
-cd NakliZon
+git clone https://github.com/your-username/naklizon.git
+cd naklizon
 ```
 
 ---
 
+
 ## 2️⃣ Start the Backend
 ```bash
-cd Server
+cd server
 npm install
 # Create a .env file and add:
 # MONGO_URI=<your-mongodb-uri>
 # JWT_SECRET=<your-jwt-secret>
-# RAZORPAY_KEY_ID=<your-razorpay-key>
-# RAZORPAY_KEY_SECRET=<your-razorpay-secret>
-# CLIENT_URL=http://localhost:5173
 npm run dev
 ```
 
+
+
+
 ## 3️⃣ Start the Frontend
 ```bash
-cd Client
+cd client
 npm install
-# Create a .env file and add:
-# VITE_CLOUD_NAME_CLOUDINARY=<your-cloudinary-name>
-# VITE_Server_URL=http://localhost:5000
-# VITE_RAZORPAY_KEY_ID=<your-razorpay-key>
 npm run dev
 ```
 🖥️ Visit your app at: http://localhost:5173
 
----
+## 📁 Project Structure
 
-## 👤 Authors
-- **Anuj Yadav**: [GitHub](https://github.com/AnujYadav-1915)
-- **Ashish**: [GitHub](https://github.com/ashish11211121)
+```bash
+naklizon/
+├── client/
+│   ├── components/
+│   ├── pages/
+│   └── App.jsx
+├── server/
+│   ├── controllers/
+│   ├── routes/
+│   └── index.js
+└── README.md
+```
 
-⚙️ NakliZon is a professional e-commerce practice project built to showcase full-stack mastery.
+
+## 🙌 Contributing
+This is a personal learning project.
+Feel free to fork, explore, and improve it! 🤝
+
+👤 Author
+Ayush
+- 📧 palayush930592@gmail.com
+- 🔗 https://github.com/ayush1944
+
+⚙️ NakliZon is a minimal e-commerce practice project built to enhance MERN stack development skills.

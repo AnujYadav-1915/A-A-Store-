@@ -55,13 +55,14 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
 
           {/* Logo */}
-          <div className="w-auto">
-            <Link to="/" className="flex items-center gap-2 py-3 hover:scale-105 transition-transform duration-300">
-              <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-orange-500 shadow-lg shadow-orange-500/30">
-                <span className="text-white font-extrabold text-xl tracking-tighter">A&A</span>
-              </div>
-              <h1 className="text-2xl font-bold tracking-tight text-gray-800">
-                A&A <span className="font-light text-orange-500">Store</span>
+          <div className="w-48">
+            <Link to="/" className="flex items-center gap-1 py-3 hover:shadow-md transition-all duration-200">
+              <PiShoppingCartDuotone className="text-3xl text-gray-600" />
+              <h1 className="text-3xl font-bold">
+                Nakli{" "}
+                <span className="font-thin bg-[#F3A820] text-white rounded-r-md pl-1 pr-2 -ml-2">
+                  Zon
+                </span>
               </h1>
             </Link>
           </div>

@@ -1,6 +1,6 @@
 {
     "version" : 2,
-    "name": "a-a-store-backend",
+    "name": "NakliZon-backend",
     "builds": [
         {
             "src": "index.js",
