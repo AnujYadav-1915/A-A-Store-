@@ -7,9 +7,7 @@ import Context from "../context";
 export default function ViewCart() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const { fetchUserAddToCart } = useContext(Context)
-
+  const { fetchUserAddToCart } = useContext(Context);
 
   const fetchCart = async () => {
     try {
@@ -29,21 +27,18 @@ export default function ViewCart() {
   };
 
   const updateQuantity = async (id, newQty) => {
+    if (newQty < 1) return;
     const response = await fetch(API_ROUTES.updateCartItem.url, {
       method: API_ROUTES.updateCartItem.method,
       credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ _id: id, quantity: newQty }
-),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ _id: id, quantity: newQty }),
     });
-
     const responseData = await response.json();
     if (!responseData.success) {
-        console.error("Error updating quantity:", responseData.message);
-        await fetchCart(); // refresh cart
-      }
+      console.error("Error updating quantity:", responseData.message);
+    }
+    await fetchCart();
   };
 
   const removeItem = async (id) => {
@@ -51,216 +46,178 @@ export default function ViewCart() {
       await fetch(API_ROUTES.deleteCartItem.url, {
         method: API_ROUTES.deleteCartItem.method,
         credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ _id: id }),
       });
       fetchCart();
+      fetchUserAddToCart();
     } catch (err) {
       console.error("Error removing item:", err);
     }
   };
 
   useEffect(() => {
-     fetchCart();
-      fetchUserAddToCart();
-  }, [
-    cartItems
-  ]);
+    fetchCart();
+    fetchUserAddToCart();
+  }, []);
 
   const handlePayment = async () => {
-      // 1. Create order on the backend
-      const response = await fetch(API_ROUTES.payment.url, {
-        method: API_ROUTES.payment.method,
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ cartItems: cartItems }),
-      });
+    const response = await fetch(API_ROUTES.payment.url, {
+      method: API_ROUTES.payment.method,
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ cartItems: cartItems }),
+    });
 
-      const responseData = await response.json();
-      
-      if(responseData.success && responseData.order) {
-          const { id, amount, currency } = responseData.order;
+    const responseData = await response.json();
+    if (responseData.success && responseData.order) {
+      const { id, amount, currency } = responseData.order;
+      const loadRazorpay = () => {
+        return new Promise((resolve) => {
+          const script = document.createElement("script");
+          script.src = "https://checkout.razorpay.com/v1/checkout.js";
+          script.onload = () => resolve(true);
+          script.onerror = () => resolve(false);
+          document.body.appendChild(script);
+        });
+      };
 
-          // 2. Load Razorpay script dynamically
-          const loadRazorpay = () => {
-              return new Promise((resolve) => {
-                  const script = document.createElement("script");
-                  script.src = "https://checkout.razorpay.com/v1/checkout.js";
-                  script.onload = () => resolve(true);
-                  script.onerror = () => resolve(false);
-                  document.body.appendChild(script);
-              });
-          };
-
-          const res = await loadRazorpay();
-          if (!res) {
-              alert("Razorpay SDK failed to load. Are you online?");
-              return;
-          }
-
-          // 3. Initialize Razorpay popup
-          const options = {
-              key: import.meta.env.VITE_RAZORPAY_KEY_ID, // Your Razorpay Key ID
-              amount: amount.toString(),
-              currency: currency,
-              name: "NakliZon",
-              description: "Test Transaction",
-              order_id: id,
-              handler: async function (response) {
-                  // 4. Verify payment on backend
-                  const verifyRes = await fetch(API_ROUTES.verifyPayment.url, {
-                      method: API_ROUTES.verifyPayment.method,
-                      credentials: "include",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({
-                          razorpay_order_id: response.razorpay_order_id,
-                          razorpay_payment_id: response.razorpay_payment_id,
-                          razorpay_signature: response.razorpay_signature,
-                          cartItems: cartItems,
-                          userEmail: cartItems[0]?.productId?.email // Optional: pass email or userId
-                      })
-                  });
-                  const verifyData = await verifyRes.json();
-                  if (verifyData.success) {
-                      window.location.href = "/success";
-                  } else {
-                      alert("Payment verification failed");
-                  }
-              },
-              prefill: {
-                  name: "NakliZon User",
-                  email: "user@example.com",
-                  contact: "9999999999"
-              },
-              theme: {
-                  color: "#3399cc"
-              }
-          };
-
-          const paymentObject = new window.Razorpay(options);
-          paymentObject.open();
-      } else {
-          alert("Could not create Razorpay order.");
+      const res = await loadRazorpay();
+      if (!res) {
+        alert("Razorpay SDK failed to load.");
+        return;
       }
+
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: amount.toString(),
+        currency: currency,
+        name: "A&A Store",
+        description: "Premium Order Purchase",
+        order_id: id,
+        handler: async function (response) {
+          const verifyRes = await fetch(API_ROUTES.verifyPayment.url, {
+            method: API_ROUTES.verifyPayment.method,
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              cartItems: cartItems,
+            })
+          });
+          const verifyData = await verifyRes.json();
+          if (verifyData.success) {
+            window.location.href = "/success";
+          } else {
+            alert("Payment verification failed");
+          }
+        },
+        theme: { color: "#0f172a" }
+      };
+
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+    } else {
+      alert("Could not create Razorpay order.");
+    }
   };
 
-  // Total calculations
   const totalMRP = cartItems.reduce((acc, item) => acc + (item.productId.price * item.quantity), 0);
   const totalSelling = cartItems.reduce((acc, item) => acc + (item.productId.sellingPrice * item.quantity), 0);
   const totalDiscount = totalMRP - totalSelling;
 
   return (
-    <div className="bg-[#F9FAFB] min-h-screen">
+    <div className="bg-slate-50 min-h-screen pb-20">
       <Header />
-      <div className="container mx-auto px-4 py-6">
-        <h1 className="text-2xl font-bold mb-4">My Cart</h1>
-
-        {loading ? (
-          <p>Loading...</p>
-        ) : cartItems.length === 0 ? (
-          <p>Your cart is empty.</p>
-        ) : (
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Cart Items */}
-            <div className="flex-1 space-y-4">
-              {cartItems.map((item) => (
-                <div
-                  key={item._id}
-                  className="flex flex-col md:flex-row gap-4 bg-white shadow p-4 rounded"
-                >
-                  <img
-                    src={item.productId.productImage[0]}
-                    alt={item.productId.productName}
-                    className="w-full md:w-32 h-32 transparent-white object-contain bg-gray-100 rounded"
-                  />
-                  <div className="flex-1 flex flex-col gap-1">
-                    <h2 className="font-semibold text-lg">{item.productId.productName}</h2>
-                    <p className="text-sm text-gray-500 capitalize">
-                      {item.productId.category}
-                    </p>
-
-                    <div className="flex gap-2 items-center mt-2">
-                      <span className="text-red-600 font-bold">
-                        {displayINRCurrency(item.productId.sellingPrice * item.quantity)}
-                      </span>
-                      <span className="line-through text-gray-400 text-sm">
-                        {displayINRCurrency(item.productId.price * item.quantity)}
-                      </span>
-                      <span className="text-green-600 text-sm">
-                        ({Math.round(
-                          ((item.productId.price - item.productId.sellingPrice) /
-                            item.productId.price) *
-                            100
-                        )}
-                        % off)
-                      </span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="flex flex-col lg:flex-row items-start gap-10">
+          
+          <div className="flex-1 w-full space-y-6">
+            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Shopping Bag</h1>
+            
+            {loading ? (
+              <div className="h-64 flex items-center justify-center bg-white rounded-3xl premium-shadow">
+                <p className="text-slate-400 animate-pulse">Refining your selections...</p>
+              </div>
+            ) : cartItems.length === 0 ? (
+              <div className="h-64 flex flex-col items-center justify-center bg-white rounded-3xl premium-shadow space-y-4">
+                <p className="text-slate-500 font-medium text-lg">Your bag is currently empty.</p>
+                <button onClick={() => window.location.href = "/"} className="px-8 py-3 bg-premium-gradient text-white rounded-full font-bold premium-shadow hover:-translate-y-0.5 transition-all">Explore Collections</button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {cartItems.map((item) => (
+                  <div key={item._id} className="bg-white rounded-3xl premium-shadow p-6 flex flex-col md:flex-row gap-6 border border-white hover:border-blue-100 transition-all group">
+                    <div className="w-full md:w-40 h-40 bg-slate-50 rounded-2xl overflow-hidden flex items-center justify-center relative">
+                      <img src={item.productId.productImage[0]} alt={item.productId.productName} className="max-h-32 object-contain group-hover:scale-110 transition-transform duration-500" />
                     </div>
+                    
+                    <div className="flex-1 flex flex-col justify-between">
+                      <div>
+                        <div className="flex justify-between items-start">
+                          <h2 className="text-xl font-bold text-slate-900 leading-snug">{item.productId.productName}</h2>
+                          <button onClick={() => removeItem(item._id)} className="text-slate-400 hover:text-red-500 transition-colors">
+                            Remove
+                          </button>
+                        </div>
+                        <p className="text-sm font-semibold text-blue-600 uppercase tracking-widest mt-1">{item.productId.category}</p>
+                      </div>
 
-                    {/* Quantity Controls */}
-                    <div className="flex items-center gap-2 mt-2">
-                      <button
-                        className="px-2 py-1 bg-gray-200 rounded"
-                        onClick={() =>
-                          updateQuantity(item._id, item.quantity - 1)
-                        }
-                      >
-                        -
-                      </button>
-                      <span>{item.quantity}</span>
-                      <button
-                        className="px-2 py-1 bg-gray-200 rounded"
-                        onClick={() =>
-                          updateQuantity(item._id, item.quantity + 1)
-                        }
-                      >
-                        +
-                      </button>
+                      <div className="flex flex-wrap items-end justify-between gap-4 mt-6">
+                        <div className="flex items-center gap-4 bg-slate-50 rounded-2xl p-1 px-3 border border-slate-100">
+                          <button onClick={() => updateQuantity(item._id, item.quantity - 1)} className="w-8 h-8 flex items-center justify-center rounded-xl bg-white text-slate-900 shadow-sm hover:bg-slate-900 hover:text-white transition-all">-</button>
+                          <span className="font-bold w-4 text-center">{item.quantity}</span>
+                          <button onClick={() => updateQuantity(item._id, item.quantity + 1)} className="w-8 h-8 flex items-center justify-center rounded-xl bg-white text-slate-900 shadow-sm hover:bg-slate-900 hover:text-white transition-all">+</button>
+                        </div>
+                        
+                        <div className="text-right">
+                          <p className="text-2xl font-black text-slate-900 tracking-tight">{displayINRCurrency(item.productId.sellingPrice * item.quantity)}</p>
+                          <p className="text-sm text-slate-400 line-through">{displayINRCurrency(item.productId.price * item.quantity)}</p>
+                        </div>
+                      </div>
                     </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
-                    <button
-                      className="h-8 w-24 mt-2 bg-gray-600 hover:bg-gray-700 text-white  py-1 px-3 rounded"
-                      onClick={() => removeItem(item._id)}
-                    >
-                      Remove
-                    </button>
+          {cartItems.length > 0 && (
+            <div className="w-full lg:w-[400px] sticky top-28">
+              <div className="dark-glass rounded-3xl premium-shadow p-8 text-white">
+                <h2 className="text-xl font-bold mb-8">Order Summary</h2>
+                <div className="space-y-4 text-sm font-medium">
+                  <div className="flex justify-between text-slate-400">
+                    <span>Retail Value</span>
+                    <span>{displayINRCurrency(totalMRP)}</span>
+                  </div>
+                  <div className="flex justify-between text-emerald-400">
+                    <span>Elite Discount</span>
+                    <span>- {displayINRCurrency(totalDiscount)}</span>
+                  </div>
+                  <div className="flex justify-between text-slate-400">
+                    <span>Shipping</span>
+                    <span className="uppercase text-[10px] tracking-widest bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded">Complimentary</span>
+                  </div>
+                  <div className="h-px bg-white/10 my-6" />
+                  <div className="flex justify-between items-end">
+                    <div>
+                      <p className="text-slate-400 text-xs uppercase tracking-widest mb-1">Total Payable</p>
+                      <p className="text-3xl font-black tracking-tight">{displayINRCurrency(totalSelling)}</p>
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
 
-            {/* Price Summary */}
-            <div className="bg-white shadow p-4 rounded w-full lg:max-w-sm">
-              <h2 className="text-xl font-semibold mb-4">Price Details</h2>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span>Total MRP</span>
-                  <span>{displayINRCurrency(totalMRP)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Selling Price</span>
-                  <span>{displayINRCurrency(totalSelling)}</span>
-                </div>
-                <div className="flex justify-between text-green-600">
-                  <span>Discount</span>
-                  <span>- {displayINRCurrency(totalDiscount)}</span>
-                </div>
-                <hr />
-                <div className="flex justify-between font-semibold">
-                  <span>Total</span>
-                  <span>{displayINRCurrency(totalSelling)}</span>
-                </div>
+                <button onClick={handlePayment} className="w-full mt-10 bg-white text-slate-900 py-4 rounded-2xl font-black text-lg premium-shadow hover:bg-slate-200 transition-all flex items-center justify-center gap-2">
+                  Complete Purchase
+                </button>
+                <p className="text-[10px] text-center text-slate-500 uppercase tracking-[0.2em] mt-6">Secure encrypted transaction</p>
               </div>
-
-              <button onClick={handlePayment} className="mt-6 w-full bg-gray-600 hover:bg-gray-700 text-white py-2 rounded">
-                Proceed to Checkout
-              </button>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

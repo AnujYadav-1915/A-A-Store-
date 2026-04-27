@@ -11,87 +11,84 @@ import M3 from "../assets/Banner/M3.jpeg"
 import M4 from "../assets/Banner/M4.jpg"
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
 
-
 function BannerProduct() {
     const DeskTopImages = [L1, L2, L3, L4, L5, L6];
     const MobileImages = [M1, M2, M3, M4];
-    const [currentImage,setCurrentImage] = useState(0)
+    const [currentImage, setCurrentImage] = useState(0)
 
-const nextImage = React.useCallback(() => {
-        if (DeskTopImages.length - 1 > currentImage) {
-            setCurrentImage(preve => preve + 1);
-        }
-    }, [DeskTopImages.length, currentImage]);
+    const nextImage = React.useCallback(() => {
+        setCurrentImage(prev => (prev + 1) % DeskTopImages.length);
+    }, [DeskTopImages.length]);
 
-    const preveImage = () =>{
-        if(currentImage != 0){
-            setCurrentImage(preve => preve - 1)
-        }
+    const prevImage = () => {
+        setCurrentImage(prev => (prev - 1 + DeskTopImages.length) % DeskTopImages.length);
     }
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            nextImage();
+        }, 6000);
+        return () => clearInterval(interval);
+    }, [nextImage]);
 
-    useEffect(()=>{
-        const interval = setInterval(()=>{
-            if(DeskTopImages.length - 1 > currentImage){
-                nextImage()
-            }else{
-                setCurrentImage(0)
-            }
-        },5000)
+    return (
+        <div className='container mx-auto px-4 mt-6'>
+            <div className='w-full relative h-[40vh] md:h-[60vh] rounded-[2rem] overflow-hidden premium-shadow group'>
+                
+                {/* Navigation Arrows */}
+                <div className='absolute z-10 inset-0 flex items-center justify-between px-6 pointer-events-none'>
+                    <button 
+                        onClick={prevImage} 
+                        className='w-12 h-12 glass rounded-full flex items-center justify-center text-slate-800 hover:bg-white hover:scale-110 transition-all shadow-xl pointer-events-auto opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0'
+                    >
+                        <FaAngleLeft size={20} />
+                    </button>
+                    <button 
+                        onClick={nextImage} 
+                        className='w-12 h-12 glass rounded-full flex items-center justify-center text-slate-800 hover:bg-white hover:scale-110 transition-all shadow-xl pointer-events-auto opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0'
+                    >
+                        <FaAngleRight size={20} />
+                    </button>
+                </div>
 
-        return ()=> clearInterval(interval)
-    },[
-        currentImage,
-        DeskTopImages.length,
-        nextImage
-    ])
+                {/* Progress Indicators */}
+                <div className='absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2'>
+                    {DeskTopImages.map((_, idx) => (
+                        <div 
+                            key={idx} 
+                            className={`h-1.5 rounded-full transition-all duration-500 ${currentImage === idx ? 'w-8 bg-white' : 'w-2 bg-white/30'}`}
+                        />
+                    ))}
+                </div>
 
-  return (
-<div className='container mx-auto px-4 rounded'>
-  <div className='w-full relative h-[35vh] md:h-[50vh]'>  {/* ✅ Responsive height */}
+                {/* Desktop Version */}
+                <div className='hidden md:flex h-full w-full overflow-hidden bg-slate-900'>
+                    {DeskTopImages.map((imageURL, index) => (
+                        <div
+                            key={index}
+                            className='w-full h-full min-w-full transition-transform duration-700 ease-[cubic-bezier(0.65,0,0.35,1)]'
+                            style={{ transform: `translateX(-${currentImage * 100}%)` }}
+                        >
+                            <img src={imageURL} alt="Banner" className='w-full h-full object-cover' />
+                        </div>
+                    ))}
+                </div>
 
-    {/* Navigation Arrows */}
-    <div className='absolute z-10 h-full w-full md:flex items-center hidden'>
-      <div className='flex justify-between w-full text-2xl px-4'>
-        <button onClick={preveImage} className='bg-white shadow-md rounded-full p-1'>
-          <FaAngleLeft />
-        </button>
-        <button onClick={nextImage} className='bg-white shadow-md rounded-full p-1'>
-          <FaAngleRight />
-        </button>
-      </div>
-    </div>
-
-    {/* Desktop & Tablet Version */}
-    <div className='hidden md:flex h-full w-full overflow-hidden'>
-      {DeskTopImages.map((imageURL, index) => (
-        <div
-          key={index}
-          className='w-full h-full min-w-full transition-all duration-300  ease-in-out'
-          style={{ transform: `translateX(-${currentImage * 100}%)` }}
-        >
-          <img src={imageURL} alt="" className='w-full h-full object-fit' />
+                {/* Mobile Version */}
+                <div className='flex md:hidden h-full w-full overflow-hidden bg-slate-900'>
+                    {MobileImages.map((imageURL, index) => (
+                        <div
+                            key={index}
+                            className='w-full h-full min-w-full transition-transform duration-700 ease-[cubic-bezier(0.65,0,0.35,1)]'
+                            style={{ transform: `translateX(-${currentImage * 100}%)` }}
+                        >
+                            <img src={imageURL} alt="Banner" className='w-full h-full object-cover' />
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
-      ))}
-    </div>
-
-    {/* Mobile Version */}
-    <div className='flex md:hidden h-full w-full overflow-hidden'>
-      {MobileImages.map((imageURL, index) => (
-        <div
-          key={index}
-          className='w-full h-full min-w-full transition-all duration-300 ease-in-out'
-          style={{ transform: `translateX(-${currentImage * 100}%)` }}
-        >
-          <img src={imageURL} alt="" className='w-full h-full object-cover' />
-        </div>
-      ))}
-    </div>
-
-  </div>
-</div>
-
-  )
+    )
 }
 
-export default BannerProduct
+export default BannerProduct
