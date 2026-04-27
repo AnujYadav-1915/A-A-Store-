@@ -34,9 +34,10 @@ const getOrderBySessionId = require('./controller/getOrderBySessionId');
 
 const app = express();
 const allowedOrigins = [
-  'https://nakli-zon-9oup.vercel.app', // ✅ NO trailing slash
-  'https://a-a-store-frontend.vercel.app', // Added correct production URL
-  'http://localhost:3000', // for local testing
+  'https://nakli-zon-9oup.vercel.app',
+  'https://a-a-store-frontend.vercel.app',
+  'https://a-a-store-two.vercel.app', // Adding common Vercel naming variations
+  'http://localhost:3000',
   'http://localhost:5173'
 ];
 
@@ -50,6 +51,13 @@ app.use(cors({
   },
   credentials: true
 }));
+
+// Ensure DB is connected for every request
+app.use(async (req, res, next) => {
+    await connectDB();
+    next();
+});
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -90,15 +98,28 @@ app.get("/api/all-order",authToken,allOrderController)
 app.get('/api/get-order-by-session-id', authToken, getOrderBySessionId)
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
-connectDB().then(()=>{
-    if (process.env.NODE_ENV !== 'production') {
-        app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
-            console.log(`MongoDB Connected: `);
-        });
-    }
+// Connect to DB
+connectDB().catch(err => {
+    console.error("Failed to connect to DB on startup:", err);
 });
+
+// Health check with DB status
+app.get('/api/status', async (req, res) => {
+    const mongoose = require('mongoose');
+    const dbStatus = mongoose.connection.readyState === 1 ? "Connected" : "Disconnected";
+    res.json({
+        status: "Server is running",
+        database: dbStatus,
+        env: process.env.NODE_ENV
+    });
+});
+
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+}
 
 module.exports = app;

@@ -1,16 +1,16 @@
-# 🛍️ NakliZon – A Premium E-Commerce Platform
+# 🛍️ A&A Store – A Premium E-Commerce Platform
 
 [![Live Demo](https://img.shields.io/badge/Live-Demo-green)](https://a-a-store-frontend.vercel.app/)
 [![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)](#)
 [![Tech Stack](https://img.shields.io/badge/Stack-MERN-informational)](#)
 
-> ⚡ NakliZon is a high-performance e-commerce platform built with the MERN stack, featuring a seamless shopping experience and integrated Razorpay payments.
+> ⚡ A&A Store is a high-performance e-commerce platform built with the MERN stack, featuring a seamless shopping experience and integrated Razorpay payments.
 
 ---
 
 ## 🌐 Live Site
 
-🔗 [**NakliZon Live**](https://a-a-store-frontend.vercel.app/)
+🔗 [**A&A Store Live**](https://a-a-store-frontend.vercel.app/)
 
 ---
 

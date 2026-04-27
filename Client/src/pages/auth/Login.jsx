@@ -54,7 +54,7 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F9FAFB] px-4">
       <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-md">
-        <h2 className="text-2xl font-semibold text-[#111111] mb-6">Login to NakliZon</h2>
+        <h2 className="text-2xl font-semibold text-[#111111] mb-6">Login to A&A Store</h2>
         
         <form className="space-y-4">
           <input
