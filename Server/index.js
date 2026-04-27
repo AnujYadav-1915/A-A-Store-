@@ -85,9 +85,9 @@ const paymentVerification = require('./controller/paymentVerification');
 
 app.post('/api/payment', authToken, paymentController);
 app.post('/api/verify-payment', authToken, paymentVerification);
-app.get("/order-list",authToken,orderController)
-app.get("/all-order",authToken,allOrderController)
-app.get('/get-order-by-session-id', authToken, getOrderBySessionId)
+app.get("/api/order-list",authToken,orderController)
+app.get("/api/all-order",authToken,allOrderController)
+app.get('/api/get-order-by-session-id', authToken, getOrderBySessionId)
 
 
 const PORT = process.env.PORT || 5000;

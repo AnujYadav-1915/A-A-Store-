@@ -1,7 +1,4 @@
-let API_URL = import.meta.env.VITE_Server_URL || "http://localhost:5000";
-if (import.meta.env.PROD) {
-    API_URL = "https://a-a-store-backend.vercel.app";
-}
+let API_URL = import.meta.env.VITE_Server_URL || (import.meta.env.PROD ? "https://a-a-store-backend.vercel.app" : "http://localhost:5000");
 // Append /api if missing so all routes correctly map to /api/...
 if (!API_URL.endsWith('/api')) {
     API_URL += '/api';
@@ -97,15 +94,15 @@ const API_ROUTES = {
     method: 'POST',
   },
   getOrder : {
-      url : `${API_URL.replace('/api', '')}/order-list`,
+      url : `${API_URL}/order-list`,
       method : 'get'
   },
   allOrder : {
-      url : `${API_URL.replace('/api', '')}/all-order`,
+      url : `${API_URL}/all-order`,
       method : 'get'
   },
   getOrderBySessionId: {
-      url: `${API_URL.replace('/api', '')}/get-order-by-session-id`,
+      url: `${API_URL}/get-order-by-session-id`,
       method: "GET",
   },
 };

@@ -58,10 +58,10 @@ const Navbar = () => {
           <div className="w-auto">
             <Link to="/" className="flex items-center gap-2 py-3 hover:scale-105 transition-transform duration-300">
               <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-orange-500 shadow-lg shadow-orange-500/30">
-                <span className="text-white font-extrabold text-xl tracking-tighter">A&A</span>
+                <span className="text-white font-extrabold text-xl tracking-tighter">NZ</span>
               </div>
               <h1 className="text-2xl font-bold tracking-tight text-gray-800">
-                A&A <span className="font-light text-orange-500">Store</span>
+                Nakli<span className="font-light text-orange-500">Zon</span>
               </h1>
             </Link>
           </div>
