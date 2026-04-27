@@ -1,4 +1,12 @@
-let API_URL = import.meta.env.VITE_Server_URL || (import.meta.env.PROD ? "https://a-a-store-backend.vercel.app" : "http://localhost:8080");
+let API_URL = "";
+
+if (typeof window !== 'undefined') {
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    API_URL = import.meta.env.VITE_Server_URL || "http://localhost:8080";
+  } else {
+    API_URL = "/api";
+  }
+}
 // Append /api if missing so all routes correctly map to /api/...
 if (!API_URL.endsWith('/api')) {
     API_URL += '/api';
