@@ -35,10 +35,11 @@ async function userSignIn(req, res) {
         { expiresIn: 60* 60 * 24 } // Token valid for 1 day
       );
 
+      const isProduction = process.env.NODE_ENV === 'production';
       const tokenOptions = {
         httpOnly: true,
-        secure: true, 
-        sameSite: 'None',
+        secure: isProduction, 
+        sameSite: isProduction ? 'None' : 'Lax',
       };
       res.cookie('token', token, tokenOptions).json({
         message: 'User signed in successfully',
