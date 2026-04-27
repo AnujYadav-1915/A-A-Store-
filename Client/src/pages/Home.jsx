@@ -12,17 +12,20 @@ export default function Home() {
       <Header />
       <ProductsByCategory />
       <Hero />
-      <HorizontalCardProduct category={"airpodes"} heading={"Top's Airpodes"} />
-      <HorizontalCardProduct category={"watches"} heading={"Popular's Watches"} />
+      
+      <div className="space-y-16 pb-20">
+        <HorizontalCardProduct category={"earphones"} heading={"Elite Audio Experience"} />
+        <HorizontalCardProduct category={"watches"} heading={"Timeless Luxury Timepieces"} />
 
-      <VerticalCardProduct category={"mobiles"} heading={"Mobiles"}/>
-      <VerticalCardProduct category={"Mouse"} heading={"Mouse"}/>
-      <VerticalCardProduct category={"televisions"} heading={"Televisions"}/>
-      <VerticalCardProduct category={"camera"} heading={"Camera & Photography"}/>
-      <VerticalCardProduct category={"earphones"} heading={"Wired Earphones"}/>
-      <VerticalCardProduct category={"speakers"} heading={"Bluetooth Speakers"}/>
-      <VerticalCardProduct category={"refrigerator"} heading={"Refrigerator"}/>
-      <VerticalCardProduct category={"trimmers"} heading={"Trimmers"}/>
+        <VerticalCardProduct category={"mobiles"} heading={"Flagship Smartphones"}/>
+        <VerticalCardProduct category={"mouse"} heading={"Precision Productivity Tools"}/>
+        <VerticalCardProduct category={"televisions"} heading={"Cinematic Visual Experience"}/>
+        <VerticalCardProduct category={"camera"} heading={"Professional Photography"}/>
+        <VerticalCardProduct category={"earphones"} heading={"Wired High-Fidelity Audio"}/>
+        <VerticalCardProduct category={"speakers"} heading={"Immersive Sound Systems"}/>
+        <VerticalCardProduct category={"refrigerator"} heading={"Smart Kitchen Appliances"}/>
+        <VerticalCardProduct category={"trimmers"} heading={"Precision Grooming"}/>
+      </div>
       <Footer />
     </div>
   );

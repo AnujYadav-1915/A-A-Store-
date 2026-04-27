@@ -9,11 +9,8 @@ import Context from '../context'
 const HorizontalCardProduct = ({category, heading}) => {
     const [data,setData] = useState([])
     const [loading,setLoading] = useState(true)
-    const loadingList = new Array(13).fill(null)
-
-    // const [scroll,setScroll] = useState(0)
+    const loadingList = new Array(8).fill(null)
     const scrollElement = useRef()
-
 
     const { fetchUserAddToCart } = useContext(Context)
 
@@ -27,8 +24,7 @@ const HorizontalCardProduct = ({category, heading}) => {
             setLoading(true)
             const categoryProduct = await fetchCategoryWiseProduct(category)
             setLoading(false)
-
-            setData(categoryProduct?.data)
+            setData(categoryProduct?.data || [])
         }
         fetchData();
     }, [category])
@@ -40,62 +36,62 @@ const HorizontalCardProduct = ({category, heading}) => {
         scrollElement.current.scrollLeft -= 300
     }
 
-
   return (
-    <div className='container mx-auto px-4 my-6 relative'>
-
-            <h2 className='text-2xl font-semibold py-4'>{heading}</h2>
-
+    <div className='max-w-7xl mx-auto px-4 my-12 relative group'>
+        <div className='flex items-center justify-between mb-6'>
+            <h2 className='text-2xl md:text-3xl font-black text-slate-900 tracking-tight'>{heading}</h2>
+            <div className='hidden md:flex gap-2'>
+                <button onClick={scrollLeft} className='w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-900 hover:text-white transition-all'>
+                    <FaAngleLeft/>
+                </button>
+                <button onClick={scrollRight} className='w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-900 hover:text-white transition-all'>
+                    <FaAngleRight/>
+                </button>
+            </div>
+        </div>
                 
-           <div className='flex items-center gap-4 md:gap-6 overflow-scroll scrollbar-none transition-all' ref={scrollElement}>
-
-            <button  className='bg-white shadow-md rounded-full p-1 absolute left-0 text-lg hidden md:block' onClick={scrollLeft}><FaAngleLeft/></button>
-            <button  className='bg-white shadow-md rounded-full p-1 absolute right-0 text-lg hidden md:block' onClick={scrollRight}><FaAngleRight/></button> 
-
-           {   loading ? (
-                loadingList.map((product,index)=>{
-                    return(
-                        <div key={index} className='w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] h-36 bg-white rounded-sm shadow flex'>
-                            <div className='bg-slate-200 h-full p-4 min-w-[120px] md:min-w-[145px] animate-pulse'>
-
-                            </div>
-                            <div className='p-4 grid w-full gap-2'>
-                                <h2 className='font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black bg-slate-200 animate-pulse p-1 rounded-full'></h2>
-                                <p className='capitalize text-slate-500 p-1 bg-slate-200 animate-pulse rounded-full'></p>
-                                <div className='flex gap-3 w-full'>
-                                    <p className='text-red-600 font-medium p-1 bg-slate-200 w-full animate-pulse rounded-full'></p>
-                                    <p className='text-slate-500 line-through p-1 bg-slate-200 w-full animate-pulse rounded-full'></p>
-                                </div>
-                                <button className='text-sm  text-white px-3 py-0.5 rounded-full w-full bg-slate-200 animate-pulse'></button>
-                            </div>
+        <div className='flex items-center gap-6 overflow-x-auto scrollbar-none transition-all scroll-smooth pb-4' ref={scrollElement}>
+           {loading ? (
+                loadingList.map((_,index)=>(
+                    <div key={index} className='min-w-[320px] h-40 bg-white rounded-3xl premium-shadow flex border border-slate-100 animate-pulse'>
+                        <div className='bg-slate-100 h-full w-32 rounded-l-3xl'></div>
+                        <div className='p-6 flex-1 space-y-3'>
+                            <div className='h-4 bg-slate-100 rounded w-3/4'></div>
+                            <div className='h-3 bg-slate-100 rounded w-1/2'></div>
+                            <div className='h-6 bg-slate-100 rounded w-1/3'></div>
                         </div>
-                    )
-                })
-           ) : (
-            data.map((product,index)=>{
-                return(
-                    <Link key={index} to={"/product/"+product?._id} className='w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] h-36 bg-white rounded-sm shadow flex'>
-                        <div className='bg-slate-200 h-full p-4 min-w-[120px] md:min-w-[145px]'>
-                            <img src={product.productImage[0]} className='object-scale-down h-full hover:scale-110 transition-all'/>
-                        </div>
-                        <div className='p-4 grid'>
-                            <h2 className='font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black'>{product?.productName}</h2>
-                            <p className='capitalize text-slate-500'>{product?.category}</p>
-                            <div className='flex gap-3'>
-                                <p className='text-red-600 font-medium'>{ displayINRCurrency(product?.sellingPrice) }</p>
-                                <p className='text-slate-500 line-through'>{ displayINRCurrency(product?.price)  }</p>
-                            </div>
-                            <button className='text-sm bg-gray-600 hover:bg-gray-700 text-white px-3 m-2 py-0.5 rounded-full' onClick={(e)=>handleAddToCart(e,product?._id)}>Add to Cart</button>
-                        </div>
+                    </div>
+                ))
+           ) : data.length > 0 ? (
+            data.map((product,index)=>(
+                <div key={index} className='min-w-[320px] h-40 bg-white rounded-3xl premium-shadow flex border border-white hover:border-blue-100 transition-all group/card'>
+                    <Link to={"/product/"+product?._id} className='w-32 h-full bg-slate-50 flex items-center justify-center rounded-l-3xl overflow-hidden p-4 flex-shrink-0'>
+                        <img src={product.productImage[0]} className='h-full object-contain group-hover/card:scale-110 transition-transform duration-500'/>
                     </Link>
-                )
-            })
-           )
-               
-            }
-           </div>
-            
-
+                    <div className='p-5 flex-1 flex flex-col justify-between overflow-hidden'>
+                        <div className='space-y-1'>
+                            <h2 className='font-bold text-slate-900 text-ellipsis line-clamp-1 group-hover/card:text-blue-600 transition-colors'>{product?.productName}</h2>
+                            <p className='text-[10px] font-black uppercase tracking-widest text-slate-400'>{product?.category}</p>
+                        </div>
+                        <div className='flex flex-wrap items-end justify-between gap-2'>
+                            <div>
+                                <p className='text-lg font-black text-slate-900'>{ displayINRCurrency(product?.sellingPrice) }</p>
+                                <p className='text-xs text-slate-400 line-through'>{ displayINRCurrency(product?.price)  }</p>
+                            </div>
+                            <button 
+                                className='px-4 py-2 bg-slate-900 text-white text-[10px] font-bold rounded-xl hover:bg-blue-600 transition-colors uppercase'
+                                onClick={(e)=>handleAddToCart(e,product?._id)}
+                            >
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            ))
+           ) : (
+            <p className='text-slate-400 text-sm'>Discovering new varieties...</p>
+           )}
+        </div>
     </div>
   )
 }
