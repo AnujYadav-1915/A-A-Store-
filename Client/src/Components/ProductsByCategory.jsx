@@ -3,18 +3,18 @@ import { Link } from "react-router-dom";
 import API_ROUTES from "../common";
 
 const categoryIcons = {
-  "mobiles": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=200&auto=format&fit=crop",
-  "laptops": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=200&auto=format&fit=crop",
-  "earphones": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=200&auto=format&fit=crop",
-  "watches": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=200&auto=format&fit=crop",
-  "camera": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=200&auto=format&fit=crop",
-  "speakers": "https://images.unsplash.com/photo-1545454675-3531b543be5d?q=80&w=200&auto=format&fit=crop",
-  "televisions": "https://images.unsplash.com/photo-1593359674811-67cfceef06e1?q=80&w=200&auto=format&fit=crop",
-  "mouse": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?q=80&w=200&auto=format&fit=crop",
-  "printers": "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?q=80&w=200&auto=format&fit=crop",
-  "processor": "https://images.unsplash.com/photo-1591488320449-011701bb6704?q=80&w=200&auto=format&fit=crop",
-  "refrigerator": "https://images.unsplash.com/photo-1571175432244-938069d6512e?q=80&w=200&auto=format&fit=crop",
-  "trimmers": "https://images.unsplash.com/photo-1621607512214-68297480165e?q=80&w=200&auto=format&fit=crop"
+  "mobiles": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=300&auto=format&fit=crop",
+  "laptops": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=300&auto=format&fit=crop",
+  "earphones": "https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=300&auto=format&fit=crop",
+  "watches": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=300&auto=format&fit=crop",
+  "camera": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=300&auto=format&fit=crop",
+  "speakers": "https://images.unsplash.com/photo-1545454675-3531b543be5d?q=80&w=300&auto=format&fit=crop",
+  "televisions": "https://images.unsplash.com/photo-1593784991095-a205069470b6?q=80&w=300&auto=format&fit=crop",
+  "mouse": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?q=80&w=300&auto=format&fit=crop",
+  "printers": "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?q=80&w=300&auto=format&fit=crop",
+  "processor": "https://images.unsplash.com/photo-1591488320449-011701bb6704?q=80&w=300&auto=format&fit=crop",
+  "refrigerator": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=300&auto=format&fit=crop",
+  "trimmers": "https://images.unsplash.com/photo-1621607512214-68297480165e?q=80&w=300&auto=format&fit=crop"
 };
 
 const ProductsByCategory = () => {
