@@ -34,6 +34,7 @@ const getOrderBySessionId = require('./controller/getOrderBySessionId');
 
 const app = express();
 const allowedOrigins = [
+  'https://naklizon-app.vercel.app',
   'https://nakli-zon-9oup.vercel.app',
   'https://a-a-store-frontend.vercel.app',
   'http://localhost:3000',
